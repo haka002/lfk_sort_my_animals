@@ -16,7 +16,9 @@ class AnimalSort
 			return $animalList;
 		}
 
-		return $this->sortByLegs($animalList);
+		$animalListCopy = $animalList;
+
+		return $this->sortByLegs($animalListCopy);
 	}
 
 	/**

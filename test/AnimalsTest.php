@@ -67,6 +67,29 @@ class AnimalTest extends PHPUnit_Framework_TestCase
 		}
 	}
 
+	public function testCopy()
+	{
+		$dog = new Animal();
+		$dog
+			->setName('dog')
+			->setNumberOfLegs(4);
+
+		$spider = new Animal();
+		$spider
+			->setName('spider')
+			->setNumberOfLegs(8);
+
+		$human = new Animal();
+		$human
+			->setName('human')
+			->setNumberOfLegs(2);
+
+		$animalList = [$spider, $dog, $human];
+		$animalListCopy = $this->animalSort->sort($animalList);
+
+		$this->assertNotSame($animalList, $animalListCopy);
+	}
+
 	/**
 	 * @return array
 	 */
