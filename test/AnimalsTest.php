@@ -111,6 +111,7 @@ class AnimalTest extends PHPUnit_Framework_TestCase
 			->setNumberOfLegs(2);
 
 		return [
+			[['dog'], [$dog]],
 			[['dog', 'spider'], [$spider, $dog]],
 			[['human', 'dog', 'spider'], [$spider, $dog, $human]],
 		];
