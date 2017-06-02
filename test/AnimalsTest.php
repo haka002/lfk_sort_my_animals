@@ -1,7 +1,6 @@
 <?php
 
 use SortMyAnimals\Animal;
-use SortMyAnimals\AnimalList;
 use SortMyAnimals\AnimalSort;
 
 class AnimalTest extends PHPUnit_Framework_TestCase
@@ -61,7 +60,7 @@ class AnimalTest extends PHPUnit_Framework_TestCase
 	{
 		$sortedAnimals = $this->animalSort->sort($animalList);
 
-		for ($i = 0; $i < count($animalList); $i++)
+		for ($i = 0; $i < count($sortedAnimals); $i++)
 		{
 			$this->assertEquals($expected[$i], $sortedAnimals[$i]->getName());
 		}
@@ -110,10 +109,16 @@ class AnimalTest extends PHPUnit_Framework_TestCase
 			->setName('human')
 			->setNumberOfLegs(2);
 
+		$cow = new Animal();
+		$cow
+			->setName('cow')
+			->setNumberOfLegs(4);
+
 		return [
 			[['dog'], [$dog]],
 			[['dog', 'spider'], [$spider, $dog]],
 			[['human', 'dog', 'spider'], [$spider, $dog, $human]],
+			[['human', 'cow', 'dog', 'spider'], [$spider, $dog, $human, $cow]],
 		];
 	}
 

@@ -18,7 +18,29 @@ class AnimalSort
 
 		$animalListCopy = $animalList;
 
-		return $this->sortByLegs($animalListCopy);
+		$sortedByLegs = $this->sortByLegs($animalListCopy);
+
+		return $this->sortEquals($sortedByLegs);
+	}
+
+	/**
+	 * @param Animal[] $animalList
+	 *
+	 * @return Animal[]
+	 */
+	public function sortEquals($animalList)
+	{
+		$tempArrayForPartialSorting = [];
+		for ($i = 0; $i < count($animalList) - 1; $i++)
+		{
+			if ($animalList[$i]->getNumberOfLegs() == $animalList[$i + 1]->getNumberOfLegs())
+			{
+				$tempArrayForPartialSorting[$i][serialize($animalList[$i])]     = $animalList[$i];
+				$tempArrayForPartialSorting[$i][serialize($animalList[$i + 1])] = $animalList[$i + 1];
+			}
+		}
+
+		return $this->sortByName($animalList, $tempArrayForPartialSorting);
 	}
 
 	/**
@@ -44,8 +66,46 @@ class AnimalSort
 		return $animalList;
 	}
 
-	private function sortByName()
+	/**
+	 * @param Animal[] $animalList
+	 * @param Animal[] $equalAnimals
+	 *
+	 * @return Animal[]
+	 */
+	private function sortByName($animalList, $equalAnimals)
 	{
+		$changeableIndexes = array_keys($equalAnimals);
 
+		/**
+		 * @var  string    $animalListIndex
+		 * @var  Animal[] $animals
+		 */
+		foreach ($changeableIndexes as $animalListIndex)
+		{
+
+			$animals = array_values($equalAnimals[$animalListIndex]);
+
+			for ($i = count($animals); $i > 1; $i--)
+			{
+				for ($j = 0; $j < $i - 1; $j++)
+				{
+					$tempCompareArray       = [$animals[$j]->getName(), $animals[$j + 1]->getName()];
+					$tempCompareArraySorted = $tempCompareArray;
+					sort($tempCompareArray, SORT_STRING);
+
+					if ($tempCompareArray != $tempCompareArraySorted)
+					{
+						$tempElement     = $animals[$j];
+						$animals[$j]     = $animals[$j + 1];
+						$animals[$j + 1] = $tempElement;
+					}
+				}
+			}
+
+
+			array_splice($animalList, $animalListIndex, count($animals), $animals);
+		}
+
+		return $animalList;
 	}
 }
